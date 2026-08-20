@@ -51,7 +51,7 @@ class _ConsultationPainter extends CustomPainter {
     _drawBottle(canvas, Offset(size.width * 0.68, tableY - 8));
 
     _drawPerson(
-      canvas,
+      canvas: canvas,
       origin: Offset(size.width * 0.30, tableY - 18),
       facingRight: true,
       coat: Colors.white,
@@ -59,7 +59,7 @@ class _ConsultationPainter extends CustomPainter {
       skin: const Color(0xFFE8C4A8),
     );
     _drawPerson(
-      canvas,
+      canvas: canvas,
       origin: Offset(size.width * 0.70, tableY - 18),
       facingRight: false,
       coat: const Color(0xFF8FBF9A),

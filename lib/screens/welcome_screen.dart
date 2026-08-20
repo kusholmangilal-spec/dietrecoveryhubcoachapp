@@ -29,15 +29,12 @@ class WelcomeScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         const SizedBox(height: 8),
-                        Semantics(
-                          label: 'Diet Recovery Hub logo',
-                          image: true,
-                          child: Image.asset(
-                            'assets/images/diet_recovery_hub_logo.png',
-                            height: width < 360 ? 72 : 88,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.high,
-                          ),
+                        Image.asset(
+                          'assets/images/diet_recovery_hub_logo.png',
+                          height: width < 360 ? 72 : 88,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.high,
+                          semanticLabel: 'Diet Recovery Hub logo',
                         ),
                         SizedBox(height: width < 360 ? 20 : 28),
                         Text.rich(
