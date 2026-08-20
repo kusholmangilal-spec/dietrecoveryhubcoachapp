@@ -15,8 +15,9 @@ void main() {
 
   testWidgets('welcome screen shows brand and coach CTA', (tester) async {
     await pumpApp(tester);
-    expect(find.text('Diet Recovery Hub'), findsOneWidget);
-    expect(find.text('Become a coach'), findsOneWidget);
+    expect(find.bySemanticsLabel('Diet Recovery Hub logo'), findsOneWidget);
+    expect(find.textContaining('Help people heal'), findsOneWidget);
+    expect(find.text('Become a Coach'), findsOneWidget);
     expect(find.text('I already have an account'), findsOneWidget);
   });
 
@@ -43,7 +44,7 @@ void main() {
 
   testWidgets('registration moves to admin verification', (tester) async {
     await pumpApp(tester);
-    await tester.tap(find.text('Become a coach'));
+    await tester.tap(find.text('Become a Coach'));
     await tester.pumpAndSettle();
 
     Future<void> fill(String label, String value) async {

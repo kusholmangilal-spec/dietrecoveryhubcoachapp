@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
-import '../widgets/ui.dart';
+import '../widgets/welcome_illustration.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
 
@@ -10,121 +10,160 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final horizontal = width < 360 ? 18.0 : 24.0;
+    final headlineSize = width < 360 ? 28.0 : 32.0;
+
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF0E2F28), Color(0xFF123F34), AppColors.forest, Color(0xFF3A8A6E)],
-          ),
-        ),
-        child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(24, 20, 24, 28),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight - 48),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const BrandMark(size: 56),
-                          const SizedBox(width: 14),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: AppColors.parchment,
+      body: Stack(
+        children: [
+          const Positioned.fill(child: WelcomeBackdrop()),
+          SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(horizontal, 18, horizontal, 20),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight - 38),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 8),
+                        Semantics(
+                          label: 'Diet Recovery Hub logo',
+                          image: true,
+                          child: Image.asset(
+                            'assets/images/diet_recovery_hub_logo.png',
+                            height: width < 360 ? 72 : 88,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.high,
+                          ),
+                        ),
+                        SizedBox(height: width < 360 ? 20 : 28),
+                        Text.rich(
+                          TextSpan(
+                            style: TextStyle(
+                              fontFamily: 'serif',
+                              fontSize: headlineSize,
+                              fontWeight: FontWeight.w700,
+                              height: 1.22,
+                              color: AppColors.forestDeep,
+                            ),
                             children: const [
-                              Text(
-                                'Diet Recovery Hub',
-                                style: TextStyle(
-                                  color: Color(0xFFD7E8DE),
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 0.3,
-                                ),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                'Coach studio',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
-                                ),
+                              TextSpan(text: 'Help people heal\n'),
+                              TextSpan(text: 'their '),
+                              TextSpan(
+                                text: 'health with food.',
+                                style: TextStyle(color: Color(0xFF3E8F6F)),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 36),
-                      const Text(
-                        'Coach with calm. Guide recovery, not restriction.',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 34,
-                          fontWeight: FontWeight.w800,
-                          height: 1.15,
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                      const SizedBox(height: 14),
-                      Text(
-                        'Review meals, assign restorative plans, and stay close to the people you coach — in one place.',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.84),
-                          fontSize: 16,
-                          height: 1.45,
+                        const SizedBox(height: 14),
+                        const _HeadlineDivider(),
+                        const SizedBox(height: 14),
+                        const Text(
+                          'Create personalized recovery plans.\n'
+                          'Schedule consultations, manage clients,\n'
+                          'and track progress.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.muted,
+                            fontSize: 15,
+                            height: 1.5,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 28),
-                      const _WelcomeFeature(
-                        icon: Icons.groups_rounded,
-                        title: 'My Clients',
-                        body: 'See who is on track, who needs support, and last check-ins.',
-                      ),
-                      const SizedBox(height: 10),
-                      const _WelcomeFeature(
-                        icon: Icons.restaurant_rounded,
-                        title: 'Meal reviews',
-                        body: 'Approve logs and send gentle, practical feedback.',
-                      ),
-                      const SizedBox(height: 10),
-                      const _WelcomeFeature(
-                        icon: Icons.event_available_rounded,
-                        title: 'Consultations',
-                        body: 'Keep sessions, progress, and reports in one workspace.',
-                      ),
-                      const SizedBox(height: 32),
-                      FilledButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const RegistrationScreen()),
-                          );
-                        },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: AppColors.forest,
+                        const SizedBox(height: 18),
+                        const WelcomeConsultationIllustration(),
+                        const SizedBox(height: 18),
+                        const _FeatureStrip(),
+                        const SizedBox(height: 22),
+                        _WelcomePrimaryButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => const RegistrationScreen()),
+                            );
+                          },
                         ),
-                        child: const Text('Become a coach'),
-                      ),
-                      const SizedBox(height: 12),
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const LoginScreen()),
-                          );
-                        },
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          side: const BorderSide(color: Colors.white70),
+                        const SizedBox(height: 12),
+                        _WelcomeSecondaryButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => const LoginScreen()),
+                            );
+                          },
                         ),
-                        child: const Text('I already have an account'),
-                      ),
-                    ],
+                        const SizedBox(height: 18),
+                        const _TrustMessage(),
+                      ],
+                    ),
                   ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeadlineDivider extends StatelessWidget {
+  const _HeadlineDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: AppColors.forest.withValues(alpha: 0.18), indent: 36)),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Icon(Icons.favorite_rounded, size: 14, color: AppColors.forest),
+        ),
+        Expanded(child: Divider(color: AppColors.forest.withValues(alpha: 0.18), endIndent: 36)),
+      ],
+    );
+  }
+}
+
+class _FeatureStrip extends StatelessWidget {
+  const _FeatureStrip();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xFFE4F0E6),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+        child: IntrinsicHeight(
+          child: Row(
+            children: [
+              Expanded(
+                child: _FeatureCell(
+                  icon: Icons.calendar_month_rounded,
+                  label: 'Schedule\nConsultations',
                 ),
-              );
-            },
+              ),
+              VerticalDivider(width: 1, thickness: 1, color: Color(0xFFC5D9C8)),
+              Expanded(
+                child: _FeatureCell(
+                  icon: Icons.groups_rounded,
+                  label: 'Manage\nClients',
+                ),
+              ),
+              VerticalDivider(width: 1, thickness: 1, color: Color(0xFFC5D9C8)),
+              Expanded(
+                child: _FeatureCell(
+                  icon: Icons.trending_up_rounded,
+                  label: 'Track\nProgress',
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -132,52 +171,134 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-class _WelcomeFeature extends StatelessWidget {
-  const _WelcomeFeature({
-    required this.icon,
-    required this.title,
-    required this.body,
-  });
+class _FeatureCell extends StatelessWidget {
+  const _FeatureCell({required this.icon, required this.label});
 
   final IconData icon;
-  final String title;
-  final String body;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.14),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icon, color: Colors.white),
+    return Column(
+      children: [
+        Icon(icon, color: AppColors.forestDeep, size: 26),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: AppColors.forestDeep,
+            fontWeight: FontWeight.w700,
+            fontSize: 12,
+            height: 1.25,
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+      ],
+    );
+  }
+}
+
+class _WelcomePrimaryButton extends StatelessWidget {
+  const _WelcomePrimaryButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.forest,
+          foregroundColor: Colors.white,
+          elevation: 6,
+          shadowColor: AppColors.forest.withValues(alpha: 0.38),
+          shape: const StadiumBorder(),
+        ),
+        child: const Row(
+          children: [
+            Icon(Icons.eco_rounded, size: 22),
+            Expanded(
+              child: Text(
+                'Become a Coach',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+              ),
+            ),
+            Icon(Icons.arrow_forward_rounded, size: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WelcomeSecondaryButton extends StatelessWidget {
+  const _WelcomeSecondaryButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white.withValues(alpha: 0.72),
+          foregroundColor: AppColors.forest,
+          elevation: 0,
+          side: const BorderSide(color: AppColors.forest, width: 1.4),
+          shape: const StadiumBorder(),
+        ),
+        child: const Row(
+          children: [
+            Icon(Icons.person_outline_rounded, size: 22),
+            Expanded(
+              child: Text(
+                'I already have an account',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+              ),
+            ),
+            Icon(Icons.arrow_forward_rounded, size: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TrustMessage extends StatelessWidget {
+  const _TrustMessage();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.verified_user_rounded, size: 16, color: AppColors.forest),
+        SizedBox(width: 8),
+        Flexible(
+          child: Text.rich(
+            TextSpan(
+              style: TextStyle(color: AppColors.muted, fontSize: 12.5, height: 1.35),
               children: [
-                Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
-                const SizedBox(height: 2),
-                Text(
-                  body,
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.78), height: 1.35),
+                TextSpan(text: 'Trusted care. '),
+                TextSpan(
+                  text: 'Better health.',
+                  style: TextStyle(color: Color(0xFF3E8F6F), fontWeight: FontWeight.w700),
                 ),
+                TextSpan(text: ' One step at a time.'),
               ],
             ),
+            textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
